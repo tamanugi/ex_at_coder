@@ -2,6 +2,7 @@ defmodule Mix.Tasks.Atcoder.New do
   @shortdoc "指定されたコンテストの問題の雛形を作成します"
 
   use Mix.Task
+  alias ExAtcoder.HttpClient
 
   @base_url "https://atcoder.jp"
   @contest_url @base_url <> "/contests"
@@ -10,9 +11,10 @@ defmodule Mix.Tasks.Atcoder.New do
     Application.ensure_all_started(:hackney)
 
     IO.inspect("#{@contest_url}/#{contest}/tasks")
-    %HTTPoison.Response{body: body} = HTTPoison.get!("#{@contest_url}/#{contest}/tasks")
+    body = HttpClient.get("#{@contest_url}/#{contest}/tasks")
 
-    Floki.parse_document!(body)
+    body
+    |> Floki.parse_document!()
     |> Floki.find("table")
     |> Floki.find("tr > td:nth-child(1) > a")
     |> Enum.map(fn tag -> {Floki.text(tag), Floki.attribute(tag, "href")} end)
@@ -41,7 +43,7 @@ defmodule Mix.Tasks.Atcoder.New do
 
     yaml = testcase_dir <> "/#{Macro.underscore(problem)}.yml"
     unless File.exists?(yaml) do
-      %HTTPoison.Response{body: body} = HTTPoison.get!(@base_url <> url)
+      body = HttpClient.get(@base_url <> url)
       cases =
         Floki.parse_document!(body)
         |> Floki.find(".part > section")
