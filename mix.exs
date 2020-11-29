@@ -6,8 +6,13 @@ defmodule ExAtCoder.MixProject do
       app: :ex_at_coder,
       version: "0.1.0",
       elixir: "~> 1.10",
+      description: "mix task for Your AtCoder LIFE✨",
       start_permanent: Mix.env() == :prod,
-      deps: deps()
+      deps: deps(),
+      package: [
+        licenses: ["MIT"],
+        links: %{"GitHub" => "https://github.com/tamanugi/ex_at_coder" }
+      ]
     ]
   end
 
