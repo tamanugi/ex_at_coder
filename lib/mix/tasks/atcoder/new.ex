@@ -26,7 +26,7 @@ defmodule Mix.Tasks.Atcoder.New do
     file = dir <> "/#{Macro.underscore(problem)}.ex"
     unless File.exists?(file) do
       namespace = "#{Macro.camelize(contest)}.#{Macro.camelize(problem)}"
-      Mix.Generator.copy_template("lib/template.eex", file, [namespace: namespace])
+      genenrate_code(file, namespace)
     end
 
     # テストケース
@@ -45,6 +45,27 @@ defmodule Mix.Tasks.Atcoder.New do
       Mix.Generator.create_file(yaml, cases)
     end
 
+  end
+
+  defp genenrate_code(file, namespace) do
+    case Application.fetch_env(:ex_at_coder, :template_path) do
+      :error ->
+        code = default_template(namespace)
+        Mix.Generator.create_file(file, code)
+
+      {:ok, path} ->
+        Mix.Generator.copy_template(path, file, [namespace: namespace])
+    end
+
+  end
+
+  defp default_template(namespace) do
+    """
+    defmodule #{namespace}.Main do
+      def main() do
+      end
+    end
+    """
   end
 
   defp testcase_yaml(n, input, output) do
