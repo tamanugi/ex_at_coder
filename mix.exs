@@ -30,7 +30,8 @@ defmodule ExAtCoder.MixProject do
       # {:dep_from_git, git: "https://github.com/elixir-lang/my_dep.git", tag: "0.1.0"}
       {:httpoison, "~> 1.7"},
       {:floki, "~> 0.29.0"},
-      {:yaml_elixir, "~> 2.5"}
+      {:yaml_elixir, "~> 2.5"},
+      {:ex_doc, ">= 0.0.0", only: :dev, runtime: false}
     ]
   end
 end
