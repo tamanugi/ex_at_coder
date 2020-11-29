@@ -1,4 +1,5 @@
 defmodule Mix.Tasks.Atcoder.Login do
+  @shortdoc "AtCoderにログインします。"
 
   use Mix.Task
 

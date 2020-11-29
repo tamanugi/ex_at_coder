@@ -1,4 +1,6 @@
 defmodule Mix.Tasks.Atcoder.Test do
+  @shortdoc "指定されたコンテスト,問題のテストケースを実行します。"
+
   use Mix.Task
 
   def run([contest, problem]) do
