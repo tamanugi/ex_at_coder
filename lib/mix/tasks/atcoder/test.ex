@@ -6,10 +6,8 @@ defmodule Mix.Tasks.Atcoder.Test do
   def run([contest, problem]) do
     Application.ensure_all_started(:ex_unit)
 
-    mod =
-      [contest, problem, "Main"]
-      |> Enum.map(fn s -> Macro.camelize(s) end)
-      |> Module.concat()
+    file_path = file_path(contest, problem)
+    mod = mod(contest, problem)
 
     # load testcase yaml
     path = Path.join(File.cwd!(), "lib/#{contest}/test_case/#{problem}.yml")
@@ -21,28 +19,34 @@ defmodule Mix.Tasks.Atcoder.Test do
     Mix.shell().info("running #{test_case_number} test...")
 
     cases
-    |> Enum.each(fn c -> invoke(mod, c) end)
+    |> Enum.each(fn c -> invoke(file_path, mod, c) end)
   end
 
   def run([contest, problem, input_file]) do
     Application.ensure_all_started(:ex_unit)
 
-    mod =
-      [contest, problem, "Main"]
-      |> Enum.map(fn s -> Macro.camelize(s) end)
-      |> Module.concat()
+    file_path = file_path(contest, problem)
+    mod = mod(contest, problem)
+    test_in = Path.join(File.cwd!(), input_file) |> File.read!()
 
-    path = Path.join(File.cwd!(), input_file)
-    test_in = File.read!(path)
-
-    invoke(mod, %{"name" => input_file, "in" => test_in, "out" => ""})
+    invoke(file_path, mod, %{"name" => input_file, "in" => test_in, "out" => ""})
   end
 
   def run(_) do
     Mix.raise("usage mix atcoder.test [contest] [problem] [file path(option)]")
   end
 
-  defp invoke(mod, %{"in" => test_in, "out" => test_out, "name" => test_name}) do
+  defp file_path(contest, problem), do: "lib/#{contest}/#{problem}.ex"
+  defp mod(contest, problem) do
+    [contest, problem, "Main"]
+    |> Enum.map(fn s -> Macro.camelize(s) end)
+    |> Module.concat()
+  end
+
+  defp invoke(file, mod, %{"in" => test_in, "out" => test_out, "name" => test_name}) do
+
+    # In the context of a mix task, the "mod" is not loaded, so "require" is required
+    Code.require_file(file)
 
     test_out = test_out |> String.trim()
 
