@@ -9,27 +9,31 @@ defmodule Mix.Tasks.Atcoder.New do
 
     Repo.contest_tasks(contest)
     |> Enum.each(fn {p, [url]} -> make_code(contest, p, url) end)
+
+    IO.puts("✨ Generate code for #{contest}")
+    IO.puts("👍 Good Luck")
   end
 
   def make_code(contest, problem, url) do
-    namespace = "#{Macro.camelize(contest)}.#{Macro.camelize(problem)}"
-
-    code = CodeTemplate.make(namespace)
 
     # ディレクトリ作成
     dir = "lib/#{contest}"
-    File.mkdir(dir)
+    unless File.exists?(dir) do
+      Mix.Generator.create_directory(dir)
+    end
 
     # 提出コード雛形作成
     file = dir <> "/#{Macro.underscore(problem)}.ex"
     unless File.exists?(file) do
-      File.write(file, code)
-      IO.puts("#{file} create ✨")
+      namespace = "#{Macro.camelize(contest)}.#{Macro.camelize(problem)}"
+      Mix.Generator.copy_template("lib/template.eex", file, [namespace: namespace])
     end
 
     # テストケース
     testcase_dir = dir <> "/test_case"
-    File.mkdir(testcase_dir)
+    unless File.exists?(testcase_dir) do
+      Mix.Generator.create_directory(testcase_dir)
+    end
 
     yaml = testcase_dir <> "/#{Macro.underscore(problem)}.yml"
     unless File.exists?(yaml) do
@@ -38,9 +42,7 @@ defmodule Mix.Tasks.Atcoder.New do
         |> Enum.map(fn {n, [input: input, output: output]} -> testcase_yaml(n, input, output) end)
         |> Enum.join("\n")
 
-      File.write!(yaml, cases)
-
-      IO.puts("#{yaml} create ✨")
+      Mix.Generator.create_file(yaml, cases)
     end
 
   end
@@ -55,9 +57,4 @@ defmodule Mix.Tasks.Atcoder.New do
     """
   end
 
-end
-
-defmodule CodeTemplate do
-  require EEx
-  EEx.function_from_file(:def, :make, "lib/template.eex", [:namespace])
 end
