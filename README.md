@@ -4,6 +4,8 @@
 
 Mix Task for [AtCoder](https://atcoder.jp/)
 
+![スクリーンショット 2020-11-29 22 54 27](https://user-images.githubusercontent.com/16176282/100543886-e34e2f80-3295-11eb-97a9-182ba6aa1834.png)
+
 ## インストール
 
 ```elixir
