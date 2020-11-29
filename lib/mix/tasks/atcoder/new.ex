@@ -10,8 +10,8 @@ defmodule Mix.Tasks.Atcoder.New do
     Repo.contest_tasks(contest)
     |> Enum.each(fn {p, [url]} -> make_code(contest, p, url) end)
 
-    IO.puts("✨ Generate code for #{contest}")
-    IO.puts("👍 Good Luck")
+    Mix.shell().info("✨ Generate code for #{contest}")
+    Mix.shell().info("👍 Good Luck")
   end
 
   def make_code(contest, problem, url) do

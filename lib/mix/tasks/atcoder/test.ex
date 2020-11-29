@@ -17,8 +17,8 @@ defmodule Mix.Tasks.Atcoder.Test do
 
     test_case_number = length(cases)
 
-    IO.puts("#{contest} #{problem}")
-    IO.puts("running #{test_case_number} test...")
+    Mix.shell().info("#{contest} #{problem}")
+    Mix.shell().info("running #{test_case_number} test...")
 
     cases
     |> Enum.each(fn c -> invoke(mod, c) end)
@@ -74,9 +74,9 @@ defmodule Mix.Tasks.Atcoder.Test do
         _ -> IO.ANSI.green_background <> IO.ANSI.black <> " AC " <> IO.ANSI.reset()
       end
 
-    IO.puts("-------------------------------------")
-    IO.puts("" <> test_name <> " " <> status <> " #{div(runtime, 1000)}" <> "ms")
-    IO.puts("actual:\n#{output}")
-    IO.puts("expected:\n#{test_out}")
+    Mix.shell().info("-------------------------------------")
+    Mix.shell().info("" <> test_name <> " " <> status <> " #{div(runtime, 1000)}" <> "ms")
+    Mix.shell().info("actual:\n#{output}")
+    Mix.shell().info("expected:\n#{test_out}")
   end
 end
