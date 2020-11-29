@@ -24,6 +24,24 @@ defmodule Mix.Tasks.Atcoder.Test do
     |> Enum.each(fn c -> invoke(mod, c) end)
   end
 
+  def run([contest, problem, input_file]) do
+    Application.ensure_all_started(:ex_unit)
+
+    mod =
+      [contest, problem, "Main"]
+      |> Enum.map(fn s -> Macro.camelize(s) end)
+      |> Module.concat()
+
+    path = Path.join(File.cwd!(), input_file)
+    test_in = File.read!(path)
+
+    invoke(mod, %{"name" => input_file, "in" => test_in, "out" => ""})
+  end
+
+  def run(_) do
+    Mix.raise("usage mix atcoder.test [contest] [problem] [file path(option)]")
+  end
+
   defp invoke(mod, %{"in" => test_in, "out" => test_out, "name" => test_name}) do
 
     test_out = test_out |> String.trim()
