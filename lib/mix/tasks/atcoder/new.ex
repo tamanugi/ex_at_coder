@@ -14,7 +14,7 @@ defmodule Mix.Tasks.Atcoder.New do
     Mix.shell().info("👍 Good Luck")
   end
 
-  def make_code(contest, problem, url) do
+  defp make_code(contest, problem, url) do
 
     # ディレクトリ作成
     dir = "lib/#{contest}"
