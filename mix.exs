@@ -31,6 +31,7 @@ defmodule ExAtCoder.MixProject do
       {:httpoison, "~> 1.7"},
       {:floki, "~> 0.29.0"},
       {:yaml_elixir, "~> 2.5"},
+      {:browser_launcher, "~> 0.1.0"},
       {:ex_doc, ">= 0.0.0", only: :dev, runtime: false}
     ]
   end
