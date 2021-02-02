@@ -32,10 +32,14 @@ AtCoderにログインします。
 
 ```
 $ mix atcoder.new [contest]
+$ mix atcoder.new [contest] [tasks]
 ```
 
 指定したコンテスト用の提出ファイルの雛形とテストケースの作成を行います。  
 コンテストの指定は `arc109` のようなURLに含まれる形で指定します。
+
+また一部問題のみ作成したい場合は
+`arc109 a b d` のような形で問題を指定することができます。
 
 ```
 $ mix atcoder.new arc109
