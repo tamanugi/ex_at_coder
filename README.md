@@ -150,6 +150,19 @@ expected:
 
 ```
 
+### ブラウザでコンテストのページを開く
+
+```
+$ mix atcoder.open [contest]
+
+# あるいは
+
+$ mix atcoder.open [contest] [problem]
+```
+
+AtCoderのコンテストのページをブラウザで開きます。
+コンテスト名のみを渡した場合はコンテストのトップページを、問題名も渡した場合はその問題のページを開きます。
+
 ---
 
 Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)

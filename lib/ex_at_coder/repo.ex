@@ -34,6 +34,18 @@ defmodule ExAtCoder.Repo do
     end
   end
 
+  def absolute_url_for(path) do
+    "#{@base_url}#{path}"
+  end
+
+  def contest_url_for(contest) do
+    "#{@contest_url}/#{contest}"
+  end
+
+  def contest_tasks_url_for(contest) do
+    "#{contest_url_for(contest)}/tasks"
+  end
+
   def contest_tasks(contest) do
     body = HttpClient.get("#{@contest_url}/#{contest}/tasks")
 

@@ -4,7 +4,7 @@ defmodule ExAtCoder.MixProject do
   def project do
     [
       app: :ex_at_coder,
-      version: "0.1.2",
+      version: "0.2.1",
       elixir: "~> 1.10",
       description: "mix task for Your AtCoder LIFE✨",
       start_permanent: Mix.env() == :prod,
@@ -31,6 +31,7 @@ defmodule ExAtCoder.MixProject do
       {:httpoison, "~> 1.7"},
       {:floki, "~> 0.29.0"},
       {:yaml_elixir, "~> 2.5"},
+      {:browser_launcher, "~> 0.1.0"},
       {:ex_doc, ">= 0.0.0", only: :dev, runtime: false}
     ]
   end
