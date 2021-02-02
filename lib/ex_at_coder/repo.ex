@@ -46,6 +46,10 @@ defmodule ExAtCoder.Repo do
     "#{contest_url_for(contest)}/tasks"
   end
 
+  def contest_task_url_for(contest, task) do
+    "#{contest_url_for(contest)}/tasks/#{contest}_#{task}"
+  end
+
   def contest_tasks(contest) do
     body = HttpClient.get("#{@contest_url}/#{contest}/tasks")
 
@@ -56,11 +60,17 @@ defmodule ExAtCoder.Repo do
     |> Enum.map(fn tag -> {Floki.text(tag), Floki.attribute(tag, "href")} end)
   end
 
-  def task_cases(path) do
-      body = HttpClient.get(@base_url <> path)
-      Floki.parse_document!(body)
-      |> Floki.find(".part > section")
-      |> extract_sample()
+  def task_cases(url) do
+    url =
+      case url do
+        @base_url <> _ -> url
+        path -> @base_url <>  path
+      end
+
+    body = HttpClient.get(url)
+    Floki.parse_document!(body)
+    |> Floki.find(".part > section")
+    |> extract_sample()
   end
 
   defp extract_sample(_, acc \\ %{})
