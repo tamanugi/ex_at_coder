@@ -4,23 +4,22 @@ defmodule Mix.Tasks.Atcoder.New do
   use Mix.Task
   alias ExAtCoder.Repo
 
-  def run([contest]) do
+  def run([contest | tasks]) do
     Application.ensure_all_started(:hackney)
 
+    filter =
+      case tasks do
+        [] -> fn _ -> true end
+        _ -> fn {p, _} ->
+          tasks |> Enum.map(&String.upcase/1) |> Enum.member?(p)
+        end
+      end
+
     Repo.contest_tasks(contest)
+    |> Enum.filter(filter)
     |> Enum.each(fn {p, [url]} -> make_code(contest, p, url) end)
 
     Mix.shell().info("✨ Generate code for #{contest}")
-    Mix.shell().info("👍 Good Luck")
-  end
-
-  def run([contest, task]) do
-    Application.ensure_all_started(:hackney)
-
-    url = Repo.contest_task_url_for(contest, task)
-    make_code(contest, task, url)
-
-    Mix.shell().info("✨ Generate code for #{contest} #{task}")
     Mix.shell().info("👍 Good Luck")
   end
 
