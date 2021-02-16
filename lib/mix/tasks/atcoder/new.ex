@@ -48,7 +48,7 @@ defmodule Mix.Tasks.Atcoder.New do
     unless File.exists?(yaml) do
       cases =
         Repo.task_cases(url)
-        |> Enum.map(fn {n, [input: input, output: output]} -> testcase_yaml(n, input, output) end)
+        |> Enum.map(&testcase_yaml/1)
         |> Enum.join("\n")
 
       Mix.Generator.create_file(yaml, cases)
@@ -77,7 +77,11 @@ defmodule Mix.Tasks.Atcoder.New do
     """
   end
 
-  defp testcase_yaml(n, input, output) do
+  defp testcase_yaml({n, input_output}) when is_list(input_output) do
+
+    input = Keyword.get(input_output, :input, "")
+    output = Keyword.get(input_output, :output, "")
+
     """
     - name: sample#{n}
       in: |
