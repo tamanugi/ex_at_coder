@@ -97,7 +97,6 @@ defmodule Mix.Tasks.Atcoder.New do
 
     str
     |> String.split(new_line_regex)
-    |> IO.inspect()
     |> Enum.map(&String.trim/1)
     |> Enum.reject(& &1 == "")
     |> Enum.map(fn s -> indent <> s end)
