@@ -11,7 +11,7 @@ Mix Task for [AtCoder](https://atcoder.jp/)
 ```elixir
 def deps do
   [
-    {:ex_at_coder, "~> 0.1.0"}
+    {:ex_at_coder, "~> 0.2.3"}
   ]
 end
 ```
