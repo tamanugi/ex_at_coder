@@ -85,10 +85,23 @@ defmodule Mix.Tasks.Atcoder.New do
     """
     - name: sample#{n}
       in: |
-        #{String.replace(input, "\r\n", "\n    ")}
+    #{format_string(input)}
       out: |
-        #{String.replace(output, "\r\n", "\n    ")}
+    #{format_string(output)}
     """
+  end
+
+  defp format_string(str) when is_binary(str) do
+    new_line_regex = ~r/\r|\n|\r\n/
+    indent = "    "
+
+    str
+    |> String.split(new_line_regex)
+    |> IO.inspect()
+    |> Enum.map(&String.trim/1)
+    |> Enum.reject(& &1 == "")
+    |> Enum.map(fn s -> indent <> s end)
+    |> Enum.join("\n")
   end
 
 end
