@@ -31,10 +31,12 @@ defmodule Mix.Tasks.Atcoder.New do
       Mix.Generator.create_directory(dir)
     end
 
+    underscored_problem = Macro.underscore(problem)
+
     # 提出コード雛形作成
-    file = dir <> "/#{Macro.underscore(problem)}.ex"
+    file = dir <> "/#{underscored_problem}.ex"
     unless File.exists?(file) do
-      namespace = "#{Macro.camelize(contest)}.#{Macro.camelize(problem)}"
+      namespace = "#{Macro.camelize(contest)}.#{Macro.camelize(underscored_problem)}"
       genenrate_code(file, namespace)
     end
 
@@ -44,7 +46,7 @@ defmodule Mix.Tasks.Atcoder.New do
       Mix.Generator.create_directory(testcase_dir)
     end
 
-    yaml = testcase_dir <> "/#{Macro.underscore(problem)}.yml"
+    yaml = testcase_dir <> "/#{underscored_problem}.yml"
     unless File.exists?(yaml) do
       cases =
         Repo.task_cases(url)
